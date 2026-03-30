@@ -172,7 +172,13 @@ export async function getStudentLeaderboard() {
     .map(([login, grades]) => ({
       login,
       maskedLogin: maskStudentLogin(login),
-      rating: calculateStudentRating(grades),
+      rating: calculateStudentRating(
+        grades.map((grade) => ({
+          markValue: grade.mark_value,
+          markNumeric: grade.mark_numeric,
+          markDate: grade.mark_date,
+        })),
+      ),
     }))
     .sort((left, right) => right.rating - left.rating);
 }

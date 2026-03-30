@@ -114,13 +114,15 @@ export default function TeacherPage() {
       return;
     }
 
+    const session = storedSession;
+
     async function loadTeacherDashboard() {
       try {
         setIsLoading(true);
         setErrorMessage(null);
 
         const [teacherData, leaderboard] = await Promise.all([
-          getTeacherDashboardData(storedSession.login, lessonDate),
+          getTeacherDashboardData(session.login, lessonDate),
           getStudentLeaderboard(),
         ]);
 

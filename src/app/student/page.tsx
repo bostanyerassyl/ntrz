@@ -103,6 +103,8 @@ export default function StudentPage() {
       return;
     }
 
+    const session = storedSession;
+
     async function loadStudentDashboard() {
       try {
         setIsLoading(true);
@@ -110,9 +112,9 @@ export default function StudentPage() {
 
         const [profile, grades, todaySchedule, teacherSchedules, classSchedules, leaderboard] =
           await Promise.all([
-            getStudentProfile(storedSession.login),
-            getStudentGrades(storedSession.login),
-            getStudentTodaySchedule(storedSession.login, lessonDate),
+            getStudentProfile(session.login),
+            getStudentGrades(session.login),
+            getStudentTodaySchedule(session.login, lessonDate),
             getTeacherSchedules(lessonDate),
             getClassSchedules(lessonDate),
             getStudentLeaderboard(),
