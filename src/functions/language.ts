@@ -26,6 +26,7 @@ export const registrationTranslations = {
     submit: "Register",
     submitting: "Registering...",
     success: "Registration data was saved to Supabase.",
+    alternateAction: "If already registered, log in",
     errors: {
       loginRequired: "Login is required.",
       emailRequired: "Email is required.",
@@ -47,6 +48,7 @@ export const registrationTranslations = {
     submit: "Зарегистрироваться",
     submitting: "Регистрация...",
     success: "Данные регистрации сохранены в Supabase.",
+    alternateAction: "Если уже зарегистрированы, войдите",
     errors: {
       loginRequired: "Логин обязателен.",
       emailRequired: "Email обязателен.",
@@ -68,11 +70,75 @@ export const registrationTranslations = {
     submit: "Тіркелу",
     submitting: "Тіркелуде...",
     success: "Тіркеу деректері Supabase базасына сақталды.",
+    alternateAction: "Егер тіркелген болсаңыз, кіріңіз",
     errors: {
       loginRequired: "Логин міндетті.",
       emailRequired: "Email міндетті.",
       passwordRequired: "Құпиясөз міндетті.",
       fallback: "Тіркеу сәтсіз аяқталды.",
+    },
+  },
+} as const;
+
+export const loginTranslations = {
+  en: {
+    kicker: "Aqbobek Lyceum",
+    title: "Log in to your portal account",
+    description:
+      "Enter the data you used during registration. The system will compare it with the records stored in Supabase.",
+    loginLabel: "Login",
+    loginPlaceholder: "Enter your login",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Enter your password",
+    submit: "Log in",
+    submitting: "Logging in...",
+    success: "Login successful.",
+    alternateAction: "Need an account? Register",
+    errors: {
+      loginRequired: "Login is required.",
+      passwordRequired: "Password is required.",
+      invalidCredentials: "Login or password is incorrect.",
+      fallback: "Login failed.",
+    },
+  },
+  ru: {
+    kicker: "Aqbobek Lyceum",
+    title: "Войдите в аккаунт портала",
+    description:
+      "Введите данные, которые использовали при регистрации. Система сравнит их с записями в Supabase.",
+    loginLabel: "Логин",
+    loginPlaceholder: "Введите логин",
+    passwordLabel: "Пароль",
+    passwordPlaceholder: "Введите пароль",
+    submit: "Войти",
+    submitting: "Вход...",
+    success: "Вход выполнен успешно.",
+    alternateAction: "Нужен аккаунт? Зарегистрируйтесь",
+    errors: {
+      loginRequired: "Логин обязателен.",
+      passwordRequired: "Пароль обязателен.",
+      invalidCredentials: "Логин или пароль неверный.",
+      fallback: "Не удалось выполнить вход.",
+    },
+  },
+  kk: {
+    kicker: "Aqbobek Lyceum",
+    title: "Портал аккаунтына кіріңіз",
+    description:
+      "Тіркелу кезінде енгізген деректерді жазыңыз. Жүйе оларды Supabase-тағы жазбалармен салыстырады.",
+    loginLabel: "Логин",
+    loginPlaceholder: "Логиніңізді енгізіңіз",
+    passwordLabel: "Құпиясөз",
+    passwordPlaceholder: "Құпиясөзіңізді енгізіңіз",
+    submit: "Кіру",
+    submitting: "Кіруде...",
+    success: "Кіру сәтті аяқталды.",
+    alternateAction: "Аккаунт керек пе? Тіркеліңіз",
+    errors: {
+      loginRequired: "Логин міндетті.",
+      passwordRequired: "Құпиясөз міндетті.",
+      invalidCredentials: "Логин немесе құпиясөз қате.",
+      fallback: "Кіру сәтсіз аяқталды.",
     },
   },
 } as const;
@@ -105,4 +171,8 @@ export function setStoredLanguage(language: LanguageCode) {
 
 export function getRegistrationCopy(language: LanguageCode) {
   return registrationTranslations[language];
+}
+
+export function getLoginCopy(language: LanguageCode) {
+  return loginTranslations[language];
 }

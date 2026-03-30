@@ -78,7 +78,7 @@ export function createRegistrationRecord(
   };
 }
 
-async function hashPassword(password: string) {
+export async function createPasswordHash(password: string) {
   const bytes = new TextEncoder().encode(password);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
 
@@ -89,7 +89,7 @@ async function hashPassword(password: string) {
 
 export async function registerUser(input: RegistrationInput) {
   const registrationRecord = createRegistrationRecord(input);
-  const passwordHash = await hashPassword(registrationRecord.password);
+  const passwordHash = await createPasswordHash(registrationRecord.password);
 
   const { error } = await supabase.from("registrations").insert({
     login: registrationRecord.login,
