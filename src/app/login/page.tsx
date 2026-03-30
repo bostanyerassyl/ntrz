@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 import {
@@ -10,10 +11,12 @@ import {
   type LanguageCode,
   setStoredLanguage,
 } from "@/functions/language";
-import { type UserRole } from "@/functions/permissions";
+import { getRoleHomeRoute, type UserRole } from "@/functions/permissions";
 import { loginFields, LoginValidationError, loginUser } from "@/functions/login";
+import { setStoredUserSession } from "@/functions/user-session";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [language, setLanguage] = useState<LanguageCode>("en");
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -52,8 +55,13 @@ export default function LoginPage() {
       });
 
       setUserRole(loggedInUser.role);
+      setStoredUserSession(loggedInUser);
       form.reset();
       setMessage(copy.success);
+
+      if (loggedInUser.role === "student") {
+        router.push(getRoleHomeRoute(loggedInUser.role));
+      }
     } catch (error) {
       const nextError =
         error instanceof LoginValidationError

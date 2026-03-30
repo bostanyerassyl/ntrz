@@ -15,6 +15,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+a {
+  color: inherit;
+}
+
 .auth-page {
   min-height: 100vh;
   display: grid;
@@ -216,6 +220,348 @@ body {
 
 .auth-secondary-link:hover {
   text-decoration: underline;
+}
+
+.student-page {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.student-shell {
+  width: min(100%, 1380px);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+.student-topbar,
+.student-menu-bar,
+.student-card,
+.student-loading-panel,
+.student-error-panel {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 252, 246, 0.8);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.student-topbar {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 22px 24px;
+  border-radius: 28px;
+}
+
+.student-brand-block {
+  display: grid;
+  gap: 14px;
+}
+
+.student-kicker {
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(12, 74, 110, 0.08);
+  color: #0c4a6e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.student-brand-title {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.student-brand-copy {
+  margin: 10px 0 0;
+  max-width: 780px;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.student-topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.student-logout {
+  border: 0;
+  border-radius: 999px;
+  background: #0c4a6e;
+  color: #ffffff;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.student-menu-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 24px;
+  position: sticky;
+  top: 14px;
+  z-index: 5;
+}
+
+.student-menu-group {
+  position: relative;
+}
+
+.student-menu-trigger {
+  border: 0;
+  border-radius: 16px;
+  background: rgba(12, 74, 110, 0.08);
+  color: #0c4a6e;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.student-menu-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fffdf8;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}
+
+.student-menu-popover a {
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.student-menu-popover a:hover {
+  background: rgba(12, 74, 110, 0.06);
+}
+
+.student-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 0.9fr));
+  gap: 18px;
+}
+
+.student-card {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 28px;
+}
+
+.student-card-news,
+.student-card-rating {
+  align-content: space-between;
+}
+
+.student-card h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.student-card > p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.student-card-label {
+  margin: 0;
+  color: #0c4a6e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.student-news-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.student-news-mini-card,
+.student-mini-list-item,
+.student-profile-item {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.student-news-mini-card span,
+.student-profile-item span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.student-mini-list {
+  display: grid;
+  gap: 10px;
+}
+
+.student-mini-list-item {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.student-empty-line {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.68);
+  color: #64748b;
+}
+
+.student-rating-value {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.student-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+  gap: 18px;
+}
+
+.student-content-main,
+.student-content-side {
+  display: grid;
+  gap: 18px;
+}
+
+.student-section-heading {
+  display: grid;
+  gap: 10px;
+}
+
+.student-section-heading p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.student-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.student-profile-item strong {
+  overflow-wrap: anywhere;
+}
+
+.student-password-hash {
+  display: grid;
+  gap: 10px;
+}
+
+.student-inline-button {
+  width: fit-content;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(12, 74, 110, 0.08);
+  color: #0c4a6e;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.student-table-wrap {
+  overflow-x: auto;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  text-align: left;
+  font-size: 14px;
+}
+
+.student-table th {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.student-empty-row {
+  color: #64748b;
+  text-align: center;
+}
+
+.student-loading-panel,
+.student-error-panel {
+  padding: 20px 24px;
+  border-radius: 24px;
+  font-weight: 700;
+}
+
+.student-error-panel {
+  color: #991b1b;
+  background: rgba(254, 242, 242, 0.85);
+}
+
+.student-footer-links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding-bottom: 18px;
+}
+
+@media (max-width: 1180px) {
+  .student-hero-grid,
+  .student-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .student-page {
+    padding: 14px;
+  }
+
+  .student-topbar,
+  .student-card {
+    padding: 18px;
+  }
+
+  .student-menu-bar {
+    overflow-x: auto;
+  }
+
+  .student-news-mini-grid,
+  .student-profile-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
