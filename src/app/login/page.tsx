@@ -64,7 +64,8 @@ export default function LoginPage() {
       if (
         loggedInUser.role === "student" ||
         loggedInUser.role === "teacher" ||
-        loggedInUser.role === "parent"
+        loggedInUser.role === "parent" ||
+        loggedInUser.role === "admin"
       ) {
         router.push(getRoleHomeRoute(loggedInUser.role));
       }

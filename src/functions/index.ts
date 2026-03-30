@@ -11,3 +11,4 @@ export * from "@/functions/user-session";
 export * from "@/functions/student-portal";
 export * from "@/functions/teacher-portal";
 export * from "@/functions/parent-portal";
+export * from "@/functions/admin-portal";

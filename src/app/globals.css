@@ -702,6 +702,59 @@ a {
   padding-bottom: 18px;
 }
 
+.admin-news-form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-news-field {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-news-field span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.admin-news-field input,
+.admin-news-field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 16px;
+  background: #ffffff;
+  color: #111827;
+  outline: none;
+  resize: vertical;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-news-field input:focus,
+.admin-news-field textarea:focus {
+  border-color: #0c4a6e;
+  box-shadow: 0 0 0 4px rgba(12, 74, 110, 0.12);
+  transform: translateY(-1px);
+}
+
+.admin-news-toggle {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  width: fit-content;
+  color: #374151;
+  font-weight: 700;
+}
+
+.admin-news-cell {
+  display: grid;
+  gap: 8px;
+}
+
 .student-footer-links a {
   transition:
     transform 0.18s ease,
