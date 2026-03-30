@@ -18,6 +18,7 @@ import {
 
 export default function RegistrationPage() {
   const [language, setLanguage] = useState<LanguageCode>("en");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -121,13 +122,22 @@ export default function RegistrationPage() {
 
           <label className="auth-field" htmlFor={registrationFields.password.id}>
             <span>{copy.passwordLabel}</span>
-            <input
-              id={registrationFields.password.id}
-              name={registrationFields.password.name}
-              type="password"
-              placeholder={copy.passwordPlaceholder}
-              autoComplete="new-password"
-            />
+            <div className="password-input-wrap">
+              <input
+                id={registrationFields.password.id}
+                name={registrationFields.password.name}
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder={copy.passwordPlaceholder}
+                autoComplete="new-password"
+              />
+              <button
+                className="password-toggle"
+                type="button"
+                onClick={() => setIsPasswordVisible((current) => !current)}
+              >
+                {isPasswordVisible ? copy.hidePassword : copy.showPassword}
+              </button>
+            </div>
           </label>
 
           {message ? <p className="auth-message auth-message-success">{message}</p> : null}

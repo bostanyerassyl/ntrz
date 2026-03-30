@@ -138,6 +138,29 @@ body {
     transform 0.2s ease;
 }
 
+.password-input-wrap {
+  position: relative;
+}
+
+.password-input-wrap input {
+  padding-right: 92px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #0c4a6e;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .auth-field input:focus {
   border-color: #0c4a6e;
   box-shadow: 0 0 0 4px rgba(12, 74, 110, 0.12);

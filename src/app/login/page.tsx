@@ -14,6 +14,7 @@ import { loginFields, LoginValidationError, loginUser } from "@/functions/login"
 
 export default function LoginPage() {
   const [language, setLanguage] = useState<LanguageCode>("en");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -105,13 +106,22 @@ export default function LoginPage() {
 
           <label className="auth-field" htmlFor={loginFields.password.id}>
             <span>{copy.passwordLabel}</span>
-            <input
-              id={loginFields.password.id}
-              name={loginFields.password.name}
-              type="password"
-              placeholder={copy.passwordPlaceholder}
-              autoComplete="current-password"
-            />
+            <div className="password-input-wrap">
+              <input
+                id={loginFields.password.id}
+                name={loginFields.password.name}
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder={copy.passwordPlaceholder}
+                autoComplete="current-password"
+              />
+              <button
+                className="password-toggle"
+                type="button"
+                onClick={() => setIsPasswordVisible((current) => !current)}
+              >
+                {isPasswordVisible ? copy.hidePassword : copy.showPassword}
+              </button>
+            </div>
           </label>
 
           {message ? <p className="auth-message auth-message-success">{message}</p> : null}
