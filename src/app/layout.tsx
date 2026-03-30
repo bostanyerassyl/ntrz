@@ -1,22 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
 
 import "@/app/globals.css";
-import { siteConfig } from "@/shared/config/site";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-display",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: "ntrz",
+  description: "Aqbobek Lyceum portal frontend",
 };
 
 export default function RootLayout({
@@ -26,9 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${manrope.variable}`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

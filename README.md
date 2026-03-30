@@ -1,5 +1,5 @@
-# ntrz
-
-Initial repository setup for `aisHack`.
-
-## Участники
+Members:
+Бостан Ерасыл
+Амангелдиев Қайсар
+Артықбай Арнұр
+Ынтықбай Дінмұхаммед
