@@ -1,11 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { AuthShell } from "@/components/auth/auth-shell";
+import { AuthStatusMessages } from "@/components/auth/auth-status-messages";
+import { AuthTextField } from "@/components/auth/auth-text-field";
 import {
-  availableLanguages,
   getLoginCopy,
   getStoredLanguage,
   type LanguageCode,
@@ -81,76 +83,40 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="auth-page" data-user-role={userRole ?? ""}>
-      <section className="auth-panel">
-        <div className="auth-copy">
-          <div className="auth-toolbar">
-            <span className="auth-kicker">{copy.kicker}</span>
-            <div className="language-switcher" aria-label="Language switcher">
-              {availableLanguages.map((item) => (
-                <button
-                  key={item.code}
-                  className={`language-switcher-button${
-                    language === item.code ? " is-active" : ""
-                  }`}
-                  type="button"
-                  onClick={() => handleLanguageChange(item.code)}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <h1>{copy.title}</h1>
-          <p>{copy.description}</p>
-        </div>
+    <AuthShell
+      language={language}
+      onLanguageChange={handleLanguageChange}
+      kicker={copy.kicker}
+      title={copy.title}
+      description={copy.description}
+      onSubmit={handleSubmit}
+      submitLabel={isSubmitting ? copy.submitting : copy.submit}
+      isSubmitting={isSubmitting}
+      secondaryHref="/registration"
+      secondaryLabel={copy.alternateAction}
+      dataUserRole={userRole ?? ""}
+    >
+      <AuthTextField
+        id={loginFields.login.id}
+        name={loginFields.login.name}
+        label={copy.loginLabel}
+        placeholder={copy.loginPlaceholder}
+        autoComplete="username"
+      />
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label className="auth-field" htmlFor={loginFields.login.id}>
-            <span>{copy.loginLabel}</span>
-            <input
-              id={loginFields.login.id}
-              name={loginFields.login.name}
-              type="text"
-              placeholder={copy.loginPlaceholder}
-              autoComplete="username"
-            />
-          </label>
+      <AuthPasswordField
+        id={loginFields.password.id}
+        name={loginFields.password.name}
+        label={copy.passwordLabel}
+        placeholder={copy.passwordPlaceholder}
+        autoComplete="current-password"
+        isVisible={isPasswordVisible}
+        showLabel={copy.showPassword}
+        hideLabel={copy.hidePassword}
+        onToggleVisibility={() => setIsPasswordVisible((current) => !current)}
+      />
 
-          <label className="auth-field" htmlFor={loginFields.password.id}>
-            <span>{copy.passwordLabel}</span>
-            <div className="password-input-wrap">
-              <input
-                id={loginFields.password.id}
-                name={loginFields.password.name}
-                type={isPasswordVisible ? "text" : "password"}
-                placeholder={copy.passwordPlaceholder}
-                autoComplete="current-password"
-              />
-              <button
-                className="password-toggle"
-                type="button"
-                onClick={() => setIsPasswordVisible((current) => !current)}
-              >
-                {isPasswordVisible ? copy.hidePassword : copy.showPassword}
-              </button>
-            </div>
-          </label>
-
-          {message ? <p className="auth-message auth-message-success">{message}</p> : null}
-          {errorMessage ? (
-            <p className="auth-message auth-message-error">{errorMessage}</p>
-          ) : null}
-
-          <button className="auth-submit" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? copy.submitting : copy.submit}
-          </button>
-
-          <Link className="auth-secondary-link" href="/registration">
-            {copy.alternateAction}
-          </Link>
-        </form>
-      </section>
-    </main>
+      <AuthStatusMessages successMessage={message} errorMessage={errorMessage} />
+    </AuthShell>
   );
 }

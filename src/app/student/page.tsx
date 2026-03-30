@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import { DashboardSectionCard } from "@/components/dashboard/dashboard-section-card";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { DashboardMetricCard } from "@/components/dashboard/dashboard-metric-card";
+import { DashboardMiniListCard } from "@/components/dashboard/dashboard-mini-list-card";
 import { NewsHeroCard } from "@/components/dashboard/news-hero-card";
 import { ProfileCard } from "@/components/dashboard/profile-card";
+import { DashboardTableCard } from "@/components/dashboard/dashboard-table-card";
 import {
   getStoredLanguage,
   getStudentPortalCopy,
@@ -148,6 +150,8 @@ export default function StudentPage() {
 
   const latestGrades = dashboardState.grades.slice(0, 4);
   const topLeaderboard = dashboardState.leaderboard.slice(0, 8);
+  const latestRating =
+    topLeaderboard.find((item) => item.login === userSession?.login)?.rating ?? "-";
   const menuGroups = [
     {
       key: "me",
@@ -203,259 +207,169 @@ export default function StudentPage() {
               secondaryTitle={copy.topSchool}
               emptyState={copy.emptyState}
             />
+            <DashboardMiniListCard
+              label={copy.heroScheduleTitle}
+              title={copy.heroScheduleTitle}
+              emptyState={copy.emptyState}
+              items={dashboardState.todaySchedule.slice(0, 4).map((item) => ({
+                key: item.id,
+                primary: item.subject_name,
+                secondary: formatTimeRange(item.start_time, item.end_time),
+              }))}
+            />
 
-              <article className="student-card">
-                <p className="student-card-label">{copy.heroScheduleTitle}</p>
-                <h2>{copy.heroScheduleTitle}</h2>
-                <div className="student-mini-list">
-                  {dashboardState.todaySchedule.length ? (
-                    dashboardState.todaySchedule.slice(0, 4).map((item) => (
-                      <div key={item.id} className="student-mini-list-item">
-                        <strong>{item.subject_name}</strong>
-                        <span>{formatTimeRange(item.start_time, item.end_time)}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="student-empty-line">{copy.emptyState}</div>
-                  )}
-                </div>
-              </article>
+            <DashboardMiniListCard
+              label={copy.heroGradesTitle}
+              title={copy.heroGradesTitle}
+              emptyState={copy.emptyState}
+              items={latestGrades.map((item) => ({
+                key: item.id,
+                primary: item.subject_name ?? copy.emptyState,
+                secondary: item.mark_value ?? "-",
+              }))}
+            />
 
-              <article className="student-card">
-                <p className="student-card-label">{copy.heroGradesTitle}</p>
-                <h2>{copy.heroGradesTitle}</h2>
-                <div className="student-mini-list">
-                  {latestGrades.length ? (
-                    latestGrades.map((item) => (
-                      <div key={item.id} className="student-mini-list-item">
-                        <strong>{item.subject_name ?? copy.emptyState}</strong>
-                        <span>{item.mark_value ?? "-"}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="student-empty-line">{copy.emptyState}</div>
-                  )}
-                </div>
-              </article>
+            <DashboardMetricCard
+              label={copy.heroRatingTitle}
+              title={copy.heroRatingTitle}
+              value={latestRating}
+            />
+          </section>
 
-              <article className="student-card student-card-rating">
-                <p className="student-card-label">{copy.heroRatingTitle}</p>
-                <h2>{copy.heroRatingTitle}</h2>
-                <p className="student-rating-value">
-                  {topLeaderboard.find((item) => item.login === userSession?.login)?.rating ??
-                    "-"}
-                </p>
-              </article>
-            </section>
+          <section className="student-content-grid">
+            <div className="student-content-main">
+              <ProfileCard
+                id="student-profile"
+                sectionLabel={copy.topProfile}
+                title={copy.profileTitle}
+                description={copy.profileDescription}
+                loginLabel={copy.profileLogin}
+                emailLabel={copy.profileEmail}
+                roleLabel={copy.profileRole}
+                passwordLabel={copy.profilePassword}
+                showHashLabel={copy.profileShowHash}
+                hideHashLabel={copy.profileHideHash}
+                login={dashboardState.profile?.login ?? userSession?.login ?? "-"}
+                email={dashboardState.profile?.email ?? userSession?.email ?? "-"}
+                role={dashboardState.profile?.role ?? userSession?.role ?? "-"}
+                passwordHash={dashboardState.profile?.passwordHash ?? null}
+                isHashVisible={isHashVisible}
+                onToggleHash={() => setIsHashVisible((current) => !current)}
+              />
 
-            <section className="student-content-grid">
-              <div className="student-content-main">
-                <ProfileCard
-                  id="student-profile"
-                  sectionLabel={copy.topProfile}
-                  title={copy.profileTitle}
-                  description={copy.profileDescription}
-                  loginLabel={copy.profileLogin}
-                  emailLabel={copy.profileEmail}
-                  roleLabel={copy.profileRole}
-                  passwordLabel={copy.profilePassword}
-                  showHashLabel={copy.profileShowHash}
-                  hideHashLabel={copy.profileHideHash}
-                  login={dashboardState.profile?.login ?? userSession?.login ?? "-"}
-                  email={dashboardState.profile?.email ?? userSession?.email ?? "-"}
-                  role={dashboardState.profile?.role ?? userSession?.role ?? "-"}
-                  passwordHash={dashboardState.profile?.passwordHash ?? null}
-                  isHashVisible={isHashVisible}
-                  onToggleHash={() => setIsHashVisible((current) => !current)}
-                />
+              <DashboardTableCard
+                id="student-grades"
+                label={copy.topGrades}
+                title={copy.gradesTitle}
+                description={copy.gradesDescription}
+                headers={[
+                  copy.gradesSubject,
+                  copy.gradesLesson,
+                  copy.gradesMark,
+                  copy.gradesDate,
+                ]}
+                emptyState={copy.emptyState}
+                emptyColSpan={4}
+                hasData={dashboardState.grades.length > 0}
+              >
+                {dashboardState.grades.map((grade) => (
+                  <tr key={grade.id}>
+                    <td>{grade.subject_name ?? "-"}</td>
+                    <td>{grade.lesson_name ?? "-"}</td>
+                    <td>{grade.mark_value ?? "-"}</td>
+                    <td>{formatDateLabel(grade.mark_date)}</td>
+                  </tr>
+                ))}
+              </DashboardTableCard>
 
-                <DashboardSectionCard
-                  id="student-grades"
-                  label={copy.topGrades}
-                  title={copy.gradesTitle}
-                  description={copy.gradesDescription}
-                >
-                  <div className="student-table-wrap">
-                    <table className="student-table">
-                      <thead>
-                        <tr>
-                          <th>{copy.gradesSubject}</th>
-                          <th>{copy.gradesLesson}</th>
-                          <th>{copy.gradesMark}</th>
-                          <th>{copy.gradesDate}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dashboardState.grades.length ? (
-                          dashboardState.grades.map((grade) => (
-                            <tr key={grade.id}>
-                              <td>{grade.subject_name ?? "-"}</td>
-                              <td>{grade.lesson_name ?? "-"}</td>
-                              <td>{grade.mark_value ?? "-"}</td>
-                              <td>{formatDateLabel(grade.mark_date)}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={4} className="student-empty-row">
-                              {copy.emptyState}
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </DashboardSectionCard>
+              <DashboardTableCard
+                id="student-schedule"
+                label={copy.topTimetable}
+                title={copy.timetableTitle}
+                description={copy.timetableDescription}
+                headers={[
+                  copy.timetableTime,
+                  copy.gradesSubject,
+                  copy.timetableTeacher,
+                  copy.timetableClassroom,
+                ]}
+                emptyState={copy.emptyState}
+                emptyColSpan={4}
+                hasData={dashboardState.todaySchedule.length > 0}
+              >
+                {dashboardState.todaySchedule.map((item) => (
+                  <tr key={item.id}>
+                    <td>{formatTimeRange(item.start_time, item.end_time)}</td>
+                    <td>{item.subject_name}</td>
+                    <td>{item.teacher_name}</td>
+                    <td>{item.classroom ?? "-"}</td>
+                  </tr>
+                ))}
+              </DashboardTableCard>
+            </div>
 
-                <DashboardSectionCard
-                  id="student-schedule"
-                  label={copy.topTimetable}
-                  title={copy.timetableTitle}
-                  description={copy.timetableDescription}
-                >
-                  <div className="student-table-wrap">
-                    <table className="student-table">
-                      <thead>
-                        <tr>
-                          <th>{copy.timetableTime}</th>
-                          <th>{copy.gradesSubject}</th>
-                          <th>{copy.timetableTeacher}</th>
-                          <th>{copy.timetableClassroom}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dashboardState.todaySchedule.length ? (
-                          dashboardState.todaySchedule.map((item) => (
-                            <tr key={item.id}>
-                              <td>{formatTimeRange(item.start_time, item.end_time)}</td>
-                              <td>{item.subject_name}</td>
-                              <td>{item.teacher_name}</td>
-                              <td>{item.classroom ?? "-"}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={4} className="student-empty-row">
-                              {copy.emptyState}
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </DashboardSectionCard>
-              </div>
+            <aside className="student-content-side">
+              <DashboardTableCard
+                id="teacher-schedules"
+                label={copy.topTeacherSchedules}
+                title={copy.teacherSchedulesTitle}
+                headers={[copy.scheduleTeacher, copy.scheduleSubject, copy.scheduleClass]}
+                emptyState={copy.emptyState}
+                emptyColSpan={3}
+                hasData={dashboardState.teacherSchedules.length > 0}
+                compact
+              >
+                {dashboardState.teacherSchedules.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.teacher_name}</td>
+                    <td>{item.subject_name}</td>
+                    <td>{item.class_name}</td>
+                  </tr>
+                ))}
+              </DashboardTableCard>
 
-              <aside className="student-content-side">
-                <DashboardSectionCard
-                  id="teacher-schedules"
-                  label={copy.topTeacherSchedules}
-                  title={copy.teacherSchedulesTitle}
-                >
-                  <div className="student-table-wrap">
-                    <table className="student-table student-table-compact">
-                      <thead>
-                        <tr>
-                          <th>{copy.scheduleTeacher}</th>
-                          <th>{copy.scheduleSubject}</th>
-                          <th>{copy.scheduleClass}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dashboardState.teacherSchedules.length ? (
-                          dashboardState.teacherSchedules.map((item) => (
-                            <tr key={item.id}>
-                              <td>{item.teacher_name}</td>
-                              <td>{item.subject_name}</td>
-                              <td>{item.class_name}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={3} className="student-empty-row">
-                              {copy.emptyState}
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </DashboardSectionCard>
+              <DashboardTableCard
+                id="class-schedules"
+                label={copy.topClassSchedules}
+                title={copy.classSchedulesTitle}
+                headers={[copy.scheduleClass, copy.scheduleSubject, copy.scheduleTeacher]}
+                emptyState={copy.emptyState}
+                emptyColSpan={3}
+                hasData={dashboardState.classSchedules.length > 0}
+                compact
+              >
+                {dashboardState.classSchedules.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.class_name}</td>
+                    <td>{item.subject_name}</td>
+                    <td>{item.teacher_name}</td>
+                  </tr>
+                ))}
+              </DashboardTableCard>
 
-                <DashboardSectionCard
-                  id="class-schedules"
-                  label={copy.topClassSchedules}
-                  title={copy.classSchedulesTitle}
-                >
-                  <div className="student-table-wrap">
-                    <table className="student-table student-table-compact">
-                      <thead>
-                        <tr>
-                          <th>{copy.scheduleClass}</th>
-                          <th>{copy.scheduleSubject}</th>
-                          <th>{copy.scheduleTeacher}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dashboardState.classSchedules.length ? (
-                          dashboardState.classSchedules.map((item) => (
-                            <tr key={item.id}>
-                              <td>{item.class_name}</td>
-                              <td>{item.subject_name}</td>
-                              <td>{item.teacher_name}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={3} className="student-empty-row">
-                              {copy.emptyState}
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </DashboardSectionCard>
-
-                <DashboardSectionCard
-                  id="student-rating"
-                  label={copy.topRating}
-                  title={copy.ratingTitle}
-                  description={copy.ratingDescription}
-                >
-                  <div className="student-table-wrap">
-                    <table className="student-table student-table-compact">
-                      <thead>
-                        <tr>
-                          <th>{copy.ratingPlace}</th>
-                          <th>{copy.ratingStudent}</th>
-                          <th>{copy.ratingScore}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {topLeaderboard.length ? (
-                          topLeaderboard.map((item, index) => (
-                            <tr key={item.login}>
-                              <td>{index + 1}</td>
-                              <td>{item.maskedLogin}</td>
-                              <td>{item.rating}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={3} className="student-empty-row">
-                              {copy.emptyState}
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </DashboardSectionCard>
-              </aside>
-            </section>
-          </>
-        )}
+              <DashboardTableCard
+                id="student-rating"
+                label={copy.topRating}
+                title={copy.ratingTitle}
+                description={copy.ratingDescription}
+                headers={[copy.ratingPlace, copy.ratingStudent, copy.ratingScore]}
+                emptyState={copy.emptyState}
+                emptyColSpan={3}
+                hasData={topLeaderboard.length > 0}
+                compact
+              >
+                {topLeaderboard.map((item, index) => (
+                  <tr key={item.login}>
+                    <td>{index + 1}</td>
+                    <td>{item.maskedLogin}</td>
+                    <td>{item.rating}</td>
+                  </tr>
+                ))}
+              </DashboardTableCard>
+            </aside>
+          </section>
+        </>
+      )}
     </DashboardShell>
   );
 }
