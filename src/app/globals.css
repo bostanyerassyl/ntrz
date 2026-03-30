@@ -15,6 +15,30 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@keyframes surface-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popover-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 a {
   color: inherit;
 }
@@ -37,6 +61,7 @@ a {
   background: rgba(255, 252, 246, 0.78);
   box-shadow: 0 28px 90px rgba(15, 23, 42, 0.12);
   backdrop-filter: blur(18px);
+  animation: surface-enter 0.45s ease-out;
 }
 
 .auth-copy {
@@ -86,6 +111,19 @@ a {
   font-weight: 700;
   letter-spacing: 0.08em;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.language-switcher-button:hover {
+  transform: translateY(-1px);
+}
+
+.language-switcher-button:active {
+  transform: translateY(1px) scale(0.97);
 }
 
 .language-switcher-button.is-active {
@@ -163,6 +201,18 @@ a {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.password-toggle:hover {
+  background: rgba(12, 74, 110, 0.08);
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 .auth-field input:focus {
@@ -181,6 +231,21 @@ a {
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(3, 105, 161, 0.22);
+  filter: saturate(1.05);
+}
+
+.auth-submit:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: 0 8px 18px rgba(3, 105, 161, 0.16);
 }
 
 .auth-submit:disabled {
@@ -216,10 +281,19 @@ a {
   font-weight: 700;
   text-align: center;
   text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease,
+    opacity 0.18s ease;
 }
 
 .auth-secondary-link:hover {
+  transform: translateY(-1px);
   text-decoration: underline;
+}
+
+.auth-secondary-link:active {
+  transform: translateY(1px) scale(0.985);
 }
 
 .student-page {
@@ -232,6 +306,7 @@ a {
   margin: 0 auto;
   display: grid;
   gap: 20px;
+  animation: surface-enter 0.45s ease-out;
 }
 
 .student-topbar,
@@ -302,6 +377,19 @@ a {
   padding: 12px 16px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.student-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(12, 74, 110, 0.2);
+}
+
+.student-logout:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .student-menu-bar {
@@ -327,6 +415,19 @@ a {
   padding: 12px 16px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.student-menu-trigger:hover {
+  transform: translateY(-1px);
+  background: rgba(12, 74, 110, 0.12);
+}
+
+.student-menu-trigger:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .student-menu-popover {
@@ -341,15 +442,22 @@ a {
   border: 1px solid rgba(15, 23, 42, 0.08);
   background: #fffdf8;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  transform-origin: top left;
+  animation: popover-enter 0.18s ease-out;
 }
 
 .student-menu-popover a {
   padding: 10px 12px;
   border-radius: 12px;
   text-decoration: none;
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .student-menu-popover a:hover {
+  transform: translateX(4px);
   background: rgba(12, 74, 110, 0.06);
 }
 
@@ -364,6 +472,15 @@ a {
   gap: 18px;
   padding: 22px;
   border-radius: 28px;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.12);
 }
 
 .student-card-news,
@@ -486,6 +603,19 @@ a {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.student-inline-button:hover {
+  transform: translateY(-1px);
+  background: rgba(12, 74, 110, 0.14);
+}
+
+.student-inline-button:active {
+  transform: translateY(1px) scale(0.97);
 }
 
 .student-status-pill {
@@ -556,6 +686,32 @@ a {
   gap: 16px;
   justify-content: center;
   padding-bottom: 18px;
+}
+
+.student-footer-links a {
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.student-footer-links a:hover {
+  transform: translateY(-1px);
+}
+
+.student-footer-links a:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @media (max-width: 1180px) {
