@@ -10,10 +10,12 @@ import {
   type LanguageCode,
   setStoredLanguage,
 } from "@/functions/language";
+import { type UserRole } from "@/functions/permissions";
 import { loginFields, LoginValidationError, loginUser } from "@/functions/login";
 
 export default function LoginPage() {
   const [language, setLanguage] = useState<LanguageCode>("en");
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -27,6 +29,7 @@ export default function LoginPage() {
   function handleLanguageChange(nextLanguage: LanguageCode) {
     setLanguage(nextLanguage);
     setStoredLanguage(nextLanguage);
+    setUserRole(null);
     setMessage(null);
     setErrorMessage(null);
   }
@@ -38,15 +41,17 @@ export default function LoginPage() {
     const formData = new FormData(form);
 
     setIsSubmitting(true);
+    setUserRole(null);
     setMessage(null);
     setErrorMessage(null);
 
     try {
-      await loginUser({
+      const loggedInUser = await loginUser({
         login: String(formData.get(loginFields.login.name) ?? ""),
         password: String(formData.get(loginFields.password.name) ?? ""),
       });
 
+      setUserRole(loggedInUser.role);
       form.reset();
       setMessage(copy.success);
     } catch (error) {
@@ -68,7 +73,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="auth-page">
+    <main className="auth-page" data-user-role={userRole ?? ""}>
       <section className="auth-panel">
         <div className="auth-copy">
           <div className="auth-toolbar">

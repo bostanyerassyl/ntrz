@@ -1,3 +1,4 @@
+import { defaultUserRole, type UserRole } from "@/functions/permissions";
 import { supabase } from "@/functions/supabase";
 
 export const registrationFields = {
@@ -23,6 +24,7 @@ export type RegistrationInput = {
 
 export type RegistrationRecord = RegistrationInput & {
   createdAt: string;
+  role: UserRole;
 };
 
 export class RegistrationValidationError extends Error {
@@ -75,6 +77,7 @@ export function createRegistrationRecord(
   return {
     ...validatedInput,
     createdAt: new Date().toISOString(),
+    role: defaultUserRole,
   };
 }
 
@@ -95,6 +98,7 @@ export async function registerUser(input: RegistrationInput) {
     login: registrationRecord.login,
     email: registrationRecord.email,
     password_hash: passwordHash,
+    role: registrationRecord.role,
     created_at: registrationRecord.createdAt,
   });
 

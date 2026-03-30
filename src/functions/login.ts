@@ -1,3 +1,4 @@
+import { normalizeUserRole } from "@/functions/permissions";
 import { createPasswordHash } from "@/functions/registration";
 import { supabase } from "@/functions/supabase";
 
@@ -73,6 +74,7 @@ export async function loginUser(input: LoginInput) {
     id: matchedUser.id,
     login: matchedUser.login,
     email: matchedUser.email,
+    role: normalizeUserRole(matchedUser.role),
     createdAt: matchedUser.created_at,
   };
 }
