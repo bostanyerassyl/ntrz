@@ -563,6 +563,165 @@ export const teacherPortalTranslations = {
   },
 } as const;
 
+export const parentPortalTranslations = {
+  en: {
+    topMe: "Me",
+    topChild: "Child",
+    topProfile: "Profile",
+    topGrades: "Grades",
+    topTimetable: "Timetable",
+    topRating: "Rating",
+    pageTitle: "Parent dashboard",
+    pageDescription:
+      "A focused view for the parent: child schedule, grades, progress rating, and family account details without school-wide noise.",
+    heroChildTitle: "Linked child",
+    heroScheduleTitle: "Today's timetable",
+    heroGradesTitle: "Recent grades",
+    heroRatingTitle: "Child rating",
+    profileTitle: "Parent profile",
+    profileDescription:
+      "Parent account data is loaded from the database. The original password is still unavailable because only a secure hash is stored.",
+    profileLogin: "Login",
+    profileEmail: "Email",
+    profileRole: "Role",
+    profilePassword: "Stored password hash",
+    profileShowHash: "Show hash",
+    profileHideHash: "Hide hash",
+    childTitle: "Child overview",
+    childDescription:
+      "The parent view is linked to one student profile. If no child is linked yet, these sections stay empty.",
+    childLogin: "Student login",
+    childEmail: "Student email",
+    gradesTitle: "Child grades",
+    gradesDescription:
+      "Only the child's marks are shown here. This block mirrors the student grade view without extra school sections.",
+    gradesSubject: "Subject",
+    gradesLesson: "Lesson",
+    gradesMark: "Mark",
+    gradesDate: "Date",
+    timetableTitle: "Child timetable",
+    timetableDescription: "This table shows only the child's lessons for today.",
+    timetableTime: "Time",
+    timetableTeacher: "Teacher",
+    timetableClassroom: "Classroom",
+    ratingTitle: "Child school rating",
+    ratingDescription:
+      "The parent sees the same non-transparent rating logic as the student view, with masked classmates in the table.",
+    ratingPlace: "Place",
+    ratingStudent: "Student",
+    ratingScore: "Score",
+    loading: "Loading dashboard...",
+    emptyState: "No data yet",
+    logout: "Logout",
+    registration: "Registration",
+    login: "Login",
+  },
+  ru: {
+    topMe: "Я",
+    topChild: "Ребенок",
+    topProfile: "Профиль",
+    topGrades: "Оценки",
+    topTimetable: "Расписание",
+    topRating: "Рейтинг",
+    pageTitle: "Панель родителя",
+    pageDescription:
+      "Сфокусированная страница для родителя: расписание ребенка, оценки, рейтинг успеваемости и данные семейного аккаунта без лишних школьных блоков.",
+    heroChildTitle: "Привязанный ребенок",
+    heroScheduleTitle: "Расписание на сегодня",
+    heroGradesTitle: "Последние оценки",
+    heroRatingTitle: "Рейтинг ребенка",
+    profileTitle: "Профиль родителя",
+    profileDescription:
+      "Данные аккаунта родителя загружаются из базы. Исходный пароль недоступен, потому что хранится только безопасный хеш.",
+    profileLogin: "Логин",
+    profileEmail: "Email",
+    profileRole: "Роль",
+    profilePassword: "Сохраненный хеш пароля",
+    profileShowHash: "Показать хеш",
+    profileHideHash: "Скрыть хеш",
+    childTitle: "Данные ребенка",
+    childDescription:
+      "Страница родителя привязана к одному профилю ученика. Если связь еще не создана, блоки останутся пустыми.",
+    childLogin: "Логин ученика",
+    childEmail: "Email ученика",
+    gradesTitle: "Оценки ребенка",
+    gradesDescription:
+      "Здесь показываются только оценки ребенка. Блок повторяет ученическую таблицу без лишних школьных секций.",
+    gradesSubject: "Предмет",
+    gradesLesson: "Урок",
+    gradesMark: "Оценка",
+    gradesDate: "Дата",
+    timetableTitle: "Расписание ребенка",
+    timetableDescription: "В этой таблице показываются только уроки ребенка на сегодня.",
+    timetableTime: "Время",
+    timetableTeacher: "Учитель",
+    timetableClassroom: "Кабинет",
+    ratingTitle: "Школьный рейтинг ребенка",
+    ratingDescription:
+      "Родитель видит ту же непрозрачную логику рейтинга, что и ученик, а одноклассники в таблице остаются скрытыми.",
+    ratingPlace: "Место",
+    ratingStudent: "Ученик",
+    ratingScore: "Баллы",
+    loading: "Загрузка панели...",
+    emptyState: "Данных пока нет",
+    logout: "Выйти",
+    registration: "Регистрация",
+    login: "Вход",
+  },
+  kk: {
+    topMe: "Мен",
+    topChild: "Бала",
+    topProfile: "Профиль",
+    topGrades: "Бағалар",
+    topTimetable: "Кесте",
+    topRating: "Рейтинг",
+    pageTitle: "Ата-ана панелі",
+    pageDescription:
+      "Ата-анаға арналған ықшам бет: баланың кестесі, бағалары, рейтингі және отбасы аккаунтының деректері артық мектептік блоктарсыз.",
+    heroChildTitle: "Байланысқан бала",
+    heroScheduleTitle: "Бүгінгі кесте",
+    heroGradesTitle: "Соңғы бағалар",
+    heroRatingTitle: "Баланың рейтингі",
+    profileTitle: "Ата-ана профилі",
+    profileDescription:
+      "Ата-ана аккаунтының деректері базадан жүктеледі. Бастапқы құпиясөз көрсетілмейді, себебі тек қауіпсіз хеш сақталады.",
+    profileLogin: "Логин",
+    profileEmail: "Email",
+    profileRole: "Рөл",
+    profilePassword: "Сақталған құпиясөз хеші",
+    profileShowHash: "Хешті көрсету",
+    profileHideHash: "Хешті жасыру",
+    childTitle: "Бала деректері",
+    childDescription:
+      "Ата-ана беті бір оқушы профилімен байланысады. Егер байланыс әлі жасалмаса, бұл блоктар бос қалады.",
+    childLogin: "Оқушы логині",
+    childEmail: "Оқушы email",
+    gradesTitle: "Баланың бағалары",
+    gradesDescription:
+      "Мұнда тек баланың бағалары көрсетіледі. Бұл бөлім оқушы кестесін қайталайды, бірақ артық мектептік блоктарсыз.",
+    gradesSubject: "Пән",
+    gradesLesson: "Сабақ",
+    gradesMark: "Баға",
+    gradesDate: "Күні",
+    timetableTitle: "Баланың кестесі",
+    timetableDescription: "Бұл кестеде тек баланың бүгінгі сабақтары көрсетіледі.",
+    timetableTime: "Уақыты",
+    timetableTeacher: "Мұғалім",
+    timetableClassroom: "Кабинет",
+    ratingTitle: "Баланың мектеп рейтингі",
+    ratingDescription:
+      "Ата-ана рейтингтің дәл сол жабық логикасын көреді, ал кестеде басқа оқушылар бүркемеленіп қалады.",
+    ratingPlace: "Орын",
+    ratingStudent: "Оқушы",
+    ratingScore: "Ұпай",
+    loading: "Панель жүктелуде...",
+    emptyState: "Әзірге дерек жоқ",
+    logout: "Шығу",
+    registration: "Тіркелу",
+    login: "Кіру",
+  },
+} as const;
+
 export function isLanguageCode(value: string): value is LanguageCode {
   return availableLanguages.some((language) => language.code === value);
 }
@@ -603,4 +762,8 @@ export function getStudentPortalCopy(language: LanguageCode) {
 
 export function getTeacherPortalCopy(language: LanguageCode) {
   return teacherPortalTranslations[language];
+}
+
+export function getParentPortalCopy(language: LanguageCode) {
+  return parentPortalTranslations[language];
 }

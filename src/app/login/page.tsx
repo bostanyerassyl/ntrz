@@ -61,7 +61,11 @@ export default function LoginPage() {
       form.reset();
       setMessage(copy.success);
 
-      if (loggedInUser.role === "student" || loggedInUser.role === "teacher") {
+      if (
+        loggedInUser.role === "student" ||
+        loggedInUser.role === "teacher" ||
+        loggedInUser.role === "parent"
+      ) {
         router.push(getRoleHomeRoute(loggedInUser.role));
       }
     } catch (error) {
