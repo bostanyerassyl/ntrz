@@ -488,6 +488,27 @@ a {
   cursor: pointer;
 }
 
+.student-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.student-status-pill.is-critical {
+  background: rgba(220, 38, 38, 0.12);
+  color: #b91c1c;
+}
+
+.student-status-pill.is-warning {
+  background: rgba(217, 119, 6, 0.14);
+  color: #b45309;
+}
+
 .student-table-wrap {
   overflow-x: auto;
 }

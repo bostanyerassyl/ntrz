@@ -4,6 +4,7 @@ export type StudentGradeRow = {
   student_login: string;
   student_email: string | null;
   student_role: string;
+  class_name?: string | null;
   kundelik_person_id: number | null;
   kundelik_school_id: number | null;
   kundelik_group_id: number | null;
@@ -71,6 +72,7 @@ export function mapKundelikMarkToStudentGrade(params: {
     student_login: studentLogin,
     student_email: studentEmail,
     student_role: studentRole,
+    class_name: readNestedString(mark, "className", "class", "class_name"),
     kundelik_person_id:
       params.personId ?? readNestedNumber(mark, "person", "personId"),
     kundelik_school_id:

@@ -5,6 +5,7 @@ create table if not exists public.student_grades (
   student_login text not null,
   student_email text,
   student_role text not null default 'student',
+  class_name text,
   kundelik_person_id bigint,
   kundelik_school_id bigint,
   kundelik_group_id bigint,
@@ -19,6 +20,9 @@ create table if not exists public.student_grades (
   raw_payload jsonb not null,
   created_at timestamptz not null default now()
 );
+
+alter table public.student_grades
+add column if not exists class_name text;
 
 alter table public.student_grades enable row level security;
 

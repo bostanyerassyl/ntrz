@@ -9,45 +9,46 @@ import { NewsHeroCard } from "@/components/dashboard/news-hero-card";
 import { ProfileCard } from "@/components/dashboard/profile-card";
 import {
   getStoredLanguage,
-  getStudentPortalCopy,
+  getTeacherPortalCopy,
   type LanguageCode,
   setStoredLanguage,
 } from "@/functions/language";
+import { getRoleHomeRoute } from "@/functions/permissions";
+import { getStudentLeaderboard, type StudentLeaderboardEntry } from "@/functions/student-portal";
 import {
-  getClassSchedules,
-  getStudentGrades,
-  getStudentLeaderboard,
-  getStudentProfile,
-  getStudentTodaySchedule,
-  getTeacherSchedules,
-  type ClassScheduleEntry,
-  type StudentGrade,
-  type StudentLeaderboardEntry,
-  type StudentProfile,
-  type StudentScheduleEntry,
-  type TeacherScheduleEntry,
-} from "@/functions/student-portal";
+  getTeacherDashboardData,
+  type TeacherAssignment,
+  type TeacherOwnScheduleEntry,
+  type TeacherProfile,
+  type TeacherVisibleGrade,
+} from "@/functions/teacher-portal";
 import {
   clearStoredUserSession,
   getStoredUserSession,
   type StoredUserSession,
 } from "@/functions/user-session";
+import { type ClassScheduleEntry, type TeacherScheduleEntry } from "@/functions/student-portal";
+import { type CriticalZoneEntry } from "@/functions/critical-zone";
 
-type StudentDashboardState = {
-  profile: StudentProfile | null;
-  grades: StudentGrade[];
-  todaySchedule: StudentScheduleEntry[];
-  teacherSchedules: TeacherScheduleEntry[];
+type TeacherDashboardState = {
+  profile: TeacherProfile | null;
+  assignments: TeacherAssignment[];
+  ownSchedule: TeacherOwnScheduleEntry[];
+  visibleGrades: TeacherVisibleGrade[];
+  schoolTeacherSchedules: TeacherScheduleEntry[];
   classSchedules: ClassScheduleEntry[];
+  criticalZone: CriticalZoneEntry[];
   leaderboard: StudentLeaderboardEntry[];
 };
 
-const initialDashboardState: StudentDashboardState = {
+const initialDashboardState: TeacherDashboardState = {
   profile: null,
-  grades: [],
-  todaySchedule: [],
-  teacherSchedules: [],
+  assignments: [],
+  ownSchedule: [],
+  visibleGrades: [],
+  schoolTeacherSchedules: [],
   classSchedules: [],
+  criticalZone: [],
   leaderboard: [],
 };
 
@@ -75,18 +76,18 @@ function formatTimeRange(startTime: string, endTime: string) {
   return `${startTime.slice(0, 5)} - ${endTime.slice(0, 5)}`;
 }
 
-export default function StudentPage() {
+export default function TeacherPage() {
   const router = useRouter();
   const [language, setLanguage] = useState<LanguageCode>("en");
   const [userSession, setUserSession] = useState<StoredUserSession | null>(null);
   const [dashboardState, setDashboardState] =
-    useState<StudentDashboardState>(initialDashboardState);
+    useState<TeacherDashboardState>(initialDashboardState);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeMenu, setActiveMenu] = useState<"me" | "school" | null>(null);
   const [isHashVisible, setIsHashVisible] = useState(false);
 
-  const copy = getStudentPortalCopy(language);
+  const copy = getTeacherPortalCopy(language);
   const lessonDate = useMemo(() => getLocalDateString(), []);
 
   useEffect(() => {
@@ -101,39 +102,40 @@ export default function StudentPage() {
       return;
     }
 
-    async function loadStudentDashboard() {
+    if (storedSession.role !== "teacher") {
+      if (storedSession.role === "student") {
+        router.push(getRoleHomeRoute(storedSession.role));
+        return;
+      }
+
+      router.push("/login");
+      return;
+    }
+
+    async function loadTeacherDashboard() {
       try {
         setIsLoading(true);
         setErrorMessage(null);
 
-        const [profile, grades, todaySchedule, teacherSchedules, classSchedules, leaderboard] =
-          await Promise.all([
-            getStudentProfile(storedSession.login),
-            getStudentGrades(storedSession.login),
-            getStudentTodaySchedule(storedSession.login, lessonDate),
-            getTeacherSchedules(lessonDate),
-            getClassSchedules(lessonDate),
-            getStudentLeaderboard(),
-          ]);
+        const [teacherData, leaderboard] = await Promise.all([
+          getTeacherDashboardData(storedSession.login, lessonDate),
+          getStudentLeaderboard(),
+        ]);
 
         setDashboardState({
-          profile,
-          grades,
-          todaySchedule,
-          teacherSchedules,
-          classSchedules,
+          ...teacherData,
           leaderboard,
         });
       } catch (error) {
         setErrorMessage(
-          error instanceof Error ? error.message : "Failed to load student dashboard.",
+          error instanceof Error ? error.message : "Failed to load teacher dashboard.",
         );
       } finally {
         setIsLoading(false);
       }
     }
 
-    void loadStudentDashboard();
+    void loadTeacherDashboard();
   }, [lessonDate, router]);
 
   function handleLanguageChange(nextLanguage: LanguageCode) {
@@ -146,16 +148,17 @@ export default function StudentPage() {
     router.push("/login");
   }
 
-  const latestGrades = dashboardState.grades.slice(0, 4);
+  const latestVisibleGrades = dashboardState.visibleGrades.slice(0, 4);
   const topLeaderboard = dashboardState.leaderboard.slice(0, 8);
   const menuGroups = [
     {
       key: "me",
       label: copy.topMe,
       items: [
-        { href: "#student-profile", label: copy.topProfile },
-        { href: "#student-grades", label: copy.topGrades },
-        { href: "#student-schedule", label: copy.topTimetable },
+        { href: "#teacher-profile", label: copy.topProfile },
+        { href: "#teacher-grades", label: copy.topGrades },
+        { href: "#teacher-schedule", label: copy.topTimetable },
+        { href: "#teacher-assignments", label: copy.topAssignments },
       ],
     },
     {
@@ -163,6 +166,7 @@ export default function StudentPage() {
       label: copy.topSchool,
       items: [
         { href: "#school-news", label: copy.topSchoolNews },
+        { href: "#critical-zone", label: copy.topCriticalZone },
         { href: "#teacher-schedules", label: copy.topTeacherSchedules },
         { href: "#class-schedules", label: copy.topClassSchedules },
         { href: "#student-rating", label: copy.topRating },
@@ -177,14 +181,14 @@ export default function StudentPage() {
       language={language}
       onLanguageChange={handleLanguageChange}
       onLogout={handleLogout}
-      logoutLabel="Logout"
+      logoutLabel={copy.logout}
       activeMenu={activeMenu}
       onToggleMenu={(menuKey) =>
         setActiveMenu((current) => (current === menuKey ? null : (menuKey as "me" | "school")))
       }
       menuGroups={menuGroups}
-      footerRegistrationLabel="Registration"
-      footerLoginLabel="Login"
+      footerRegistrationLabel={copy.registration}
+      footerLoginLabel={copy.login}
     >
       {isLoading ? (
         <section className="student-loading-panel">{copy.loading}</section>
@@ -208,8 +212,8 @@ export default function StudentPage() {
                 <p className="student-card-label">{copy.heroScheduleTitle}</p>
                 <h2>{copy.heroScheduleTitle}</h2>
                 <div className="student-mini-list">
-                  {dashboardState.todaySchedule.length ? (
-                    dashboardState.todaySchedule.slice(0, 4).map((item) => (
+                  {dashboardState.ownSchedule.length ? (
+                    dashboardState.ownSchedule.slice(0, 4).map((item) => (
                       <div key={item.id} className="student-mini-list-item">
                         <strong>{item.subject_name}</strong>
                         <span>{formatTimeRange(item.start_time, item.end_time)}</span>
@@ -225,10 +229,10 @@ export default function StudentPage() {
                 <p className="student-card-label">{copy.heroGradesTitle}</p>
                 <h2>{copy.heroGradesTitle}</h2>
                 <div className="student-mini-list">
-                  {latestGrades.length ? (
-                    latestGrades.map((item) => (
+                  {latestVisibleGrades.length ? (
+                    latestVisibleGrades.map((item) => (
                       <div key={item.id} className="student-mini-list-item">
-                        <strong>{item.subject_name ?? copy.emptyState}</strong>
+                        <strong>{item.student_login}</strong>
                         <span>{item.mark_value ?? "-"}</span>
                       </div>
                     ))
@@ -239,11 +243,10 @@ export default function StudentPage() {
               </article>
 
               <article className="student-card student-card-rating">
-                <p className="student-card-label">{copy.heroRatingTitle}</p>
-                <h2>{copy.heroRatingTitle}</h2>
+                <p className="student-card-label">{copy.heroCriticalTitle}</p>
+                <h2>{copy.heroCriticalTitle}</h2>
                 <p className="student-rating-value">
-                  {topLeaderboard.find((item) => item.login === userSession?.login)?.rating ??
-                    "-"}
+                  {dashboardState.criticalZone.length || "-"}
                 </p>
               </article>
             </section>
@@ -251,7 +254,7 @@ export default function StudentPage() {
             <section className="student-content-grid">
               <div className="student-content-main">
                 <ProfileCard
-                  id="student-profile"
+                  id="teacher-profile"
                   sectionLabel={copy.topProfile}
                   title={copy.profileTitle}
                   description={copy.profileDescription}
@@ -270,7 +273,7 @@ export default function StudentPage() {
                 />
 
                 <DashboardSectionCard
-                  id="student-grades"
+                  id="teacher-grades"
                   label={copy.topGrades}
                   title={copy.gradesTitle}
                   description={copy.gradesDescription}
@@ -279,6 +282,8 @@ export default function StudentPage() {
                     <table className="student-table">
                       <thead>
                         <tr>
+                          <th>{copy.gradesStudent}</th>
+                          <th>{copy.gradesClass}</th>
                           <th>{copy.gradesSubject}</th>
                           <th>{copy.gradesLesson}</th>
                           <th>{copy.gradesMark}</th>
@@ -286,13 +291,53 @@ export default function StudentPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {dashboardState.grades.length ? (
-                          dashboardState.grades.map((grade) => (
+                        {dashboardState.visibleGrades.length ? (
+                          dashboardState.visibleGrades.map((grade) => (
                             <tr key={grade.id}>
+                              <td>{grade.student_login}</td>
+                              <td>{grade.class_name ?? "-"}</td>
                               <td>{grade.subject_name ?? "-"}</td>
                               <td>{grade.lesson_name ?? "-"}</td>
                               <td>{grade.mark_value ?? "-"}</td>
                               <td>{formatDateLabel(grade.mark_date)}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={6} className="student-empty-row">
+                              {copy.emptyState}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </DashboardSectionCard>
+
+                <DashboardSectionCard
+                  id="teacher-schedule"
+                  label={copy.topTimetable}
+                  title={copy.timetableTitle}
+                  description={copy.timetableDescription}
+                >
+                  <div className="student-table-wrap">
+                    <table className="student-table">
+                      <thead>
+                        <tr>
+                          <th>{copy.timetableTime}</th>
+                          <th>{copy.gradesSubject}</th>
+                          <th>{copy.gradesClass}</th>
+                          <th>{copy.timetableClassroom}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dashboardState.ownSchedule.length ? (
+                          dashboardState.ownSchedule.map((item) => (
+                            <tr key={item.id}>
+                              <td>{formatTimeRange(item.start_time, item.end_time)}</td>
+                              <td>{item.subject_name}</td>
+                              <td>{item.class_name}</td>
+                              <td>{item.classroom ?? "-"}</td>
                             </tr>
                           ))
                         ) : (
@@ -308,34 +353,53 @@ export default function StudentPage() {
                 </DashboardSectionCard>
 
                 <DashboardSectionCard
-                  id="student-schedule"
-                  label={copy.topTimetable}
-                  title={copy.timetableTitle}
-                  description={copy.timetableDescription}
+                  id="critical-zone"
+                  label={copy.topCriticalZone}
+                  title={copy.criticalTitle}
+                  description={copy.criticalDescription}
                 >
                   <div className="student-table-wrap">
                     <table className="student-table">
                       <thead>
                         <tr>
-                          <th>{copy.timetableTime}</th>
+                          <th>{copy.criticalStudent}</th>
+                          <th>{copy.gradesClass}</th>
                           <th>{copy.gradesSubject}</th>
-                          <th>{copy.timetableTeacher}</th>
-                          <th>{copy.timetableClassroom}</th>
+                          <th>{copy.criticalAverage}</th>
+                          <th>{copy.criticalCount}</th>
+                          <th>{copy.criticalLatest}</th>
+                          <th>{copy.criticalStatus}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {dashboardState.todaySchedule.length ? (
-                          dashboardState.todaySchedule.map((item) => (
-                            <tr key={item.id}>
-                              <td>{formatTimeRange(item.start_time, item.end_time)}</td>
-                              <td>{item.subject_name}</td>
-                              <td>{item.teacher_name}</td>
-                              <td>{item.classroom ?? "-"}</td>
+                        {dashboardState.criticalZone.length ? (
+                          dashboardState.criticalZone.map((item) => (
+                            <tr key={`${item.studentLogin}-${item.subjectName ?? "subject"}`}>
+                              <td>{item.studentLogin}</td>
+                              <td>{item.className ?? "-"}</td>
+                              <td>{item.subjectName ?? "-"}</td>
+                              <td>{item.averageScore}</td>
+                              <td>{item.gradesCount}</td>
+                              <td>
+                                {item.latestMark ? `${item.latestMark} / ` : ""}
+                                {formatDateLabel(item.latestDate)}
+                              </td>
+                              <td>
+                                <span
+                                  className={`student-status-pill${
+                                    item.riskLevel === "critical" ? " is-critical" : " is-warning"
+                                  }`}
+                                >
+                                  {item.riskLevel === "critical"
+                                    ? copy.criticalCritical
+                                    : copy.criticalWarning}
+                                </span>
+                              </td>
                             </tr>
                           ))
                         ) : (
                           <tr>
-                            <td colSpan={4} className="student-empty-row">
+                            <td colSpan={7} className="student-empty-row">
                               {copy.emptyState}
                             </td>
                           </tr>
@@ -347,6 +411,42 @@ export default function StudentPage() {
               </div>
 
               <aside className="student-content-side">
+                <DashboardSectionCard
+                  id="teacher-assignments"
+                  label={copy.topAssignments}
+                  title={copy.assignmentsTitle}
+                  description={copy.assignmentsDescription}
+                >
+                  <div className="student-table-wrap">
+                    <table className="student-table student-table-compact">
+                      <thead>
+                        <tr>
+                          <th>{copy.assignmentTeacher}</th>
+                          <th>{copy.assignmentSubject}</th>
+                          <th>{copy.assignmentClass}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dashboardState.assignments.length ? (
+                          dashboardState.assignments.map((item) => (
+                            <tr key={item.id}>
+                              <td>{item.teacher_name}</td>
+                              <td>{item.subject_name}</td>
+                              <td>{item.class_name ?? "-"}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={3} className="student-empty-row">
+                              {copy.emptyState}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </DashboardSectionCard>
+
                 <DashboardSectionCard
                   id="teacher-schedules"
                   label={copy.topTeacherSchedules}
@@ -362,8 +462,8 @@ export default function StudentPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {dashboardState.teacherSchedules.length ? (
-                          dashboardState.teacherSchedules.map((item) => (
+                        {dashboardState.schoolTeacherSchedules.length ? (
+                          dashboardState.schoolTeacherSchedules.map((item) => (
                             <tr key={item.id}>
                               <td>{item.teacher_name}</td>
                               <td>{item.subject_name}</td>

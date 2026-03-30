@@ -66,7 +66,16 @@ export async function getStudentProfile(login: string) {
 
   const profile = Array.isArray(data) ? data[0] : data;
 
-  return (profile ?? null) as StudentProfile | null;
+  if (!profile) {
+    return null;
+  }
+
+  return {
+    login: profile.login,
+    email: profile.email,
+    role: profile.role,
+    passwordHash: profile.password_hash,
+  } satisfies StudentProfile;
 }
 
 export async function getStudentGrades(login: string) {
