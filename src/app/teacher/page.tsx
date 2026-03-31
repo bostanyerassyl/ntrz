@@ -267,6 +267,7 @@ export default function TeacherPage() {
                 label={copy.topGrades}
                 title={copy.gradesTitle}
                 description={copy.gradesDescription}
+                language={language}
                 headers={[
                   copy.gradesStudent,
                   copy.gradesClass,
@@ -296,6 +297,7 @@ export default function TeacherPage() {
                 label={copy.topTimetable}
                 title={copy.timetableTitle}
                 description={copy.timetableDescription}
+                language={language}
                 headers={[
                   copy.timetableTime,
                   copy.gradesSubject,
@@ -321,6 +323,7 @@ export default function TeacherPage() {
                 label={copy.topCriticalZone}
                 title={copy.criticalTitle}
                 description={copy.criticalDescription}
+                language={language}
                 headers={[
                   copy.criticalStudent,
                   copy.gradesClass,
@@ -367,6 +370,7 @@ export default function TeacherPage() {
                 label={copy.topAssignments}
                 title={copy.assignmentsTitle}
                 description={copy.assignmentsDescription}
+                language={language}
                 headers={[copy.assignmentTeacher, copy.assignmentSubject, copy.assignmentClass]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}
@@ -386,6 +390,7 @@ export default function TeacherPage() {
                 id="teacher-schedules"
                 label={copy.topTeacherSchedules}
                 title={copy.teacherSchedulesTitle}
+                language={language}
                 headers={[copy.scheduleTeacher, copy.scheduleSubject, copy.scheduleClass]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}
@@ -405,6 +410,7 @@ export default function TeacherPage() {
                 id="class-schedules"
                 label={copy.topClassSchedules}
                 title={copy.classSchedulesTitle}
+                language={language}
                 headers={[copy.scheduleClass, copy.scheduleSubject, copy.scheduleTeacher]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}
@@ -425,6 +431,7 @@ export default function TeacherPage() {
                 label={copy.topRating}
                 title={copy.ratingTitle}
                 description={copy.ratingDescription}
+                language={language}
                 headers={[copy.ratingPlace, copy.ratingStudent, copy.ratingScore]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}

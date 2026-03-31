@@ -11,6 +11,21 @@ export const availableLanguages: Array<{
   { code: "kk", label: "KZ" },
 ];
 
+export const tableVisibilityTranslations = {
+  en: {
+    showMore: "Show more",
+    showLess: "Show less",
+  },
+  ru: {
+    showMore: "Показать больше",
+    showLess: "Свернуть",
+  },
+  kk: {
+    showMore: "Көбірек көрсету",
+    showLess: "Жинау",
+  },
+} as const;
+
 export const registrationTranslations = {
   en: {
     kicker: "Aqbobek Lyceum",
@@ -973,4 +988,8 @@ export function getParentPortalCopy(language: LanguageCode) {
 
 export function getAdminPortalCopy(language: LanguageCode) {
   return adminPortalTranslations[language];
+}
+
+export function getTableVisibilityCopy(language: LanguageCode) {
+  return tableVisibilityTranslations[language];
 }

@@ -657,9 +657,29 @@ a {
   overflow-x: auto;
 }
 
+.student-table-wrap-limited {
+  overflow-y: auto;
+  min-height: 320px;
+  max-height: 320px;
+  padding-right: 2px;
+}
+
+.student-table-wrap-limited.is-compact {
+  min-height: 260px;
+  max-height: 260px;
+}
+
+.student-table-wrap-limited.is-expanded {
+  max-height: 420px;
+}
+
 .student-table {
   width: 100%;
   border-collapse: collapse;
+}
+
+.student-table-toggle {
+  justify-self: start;
 }
 
 .student-table th,
@@ -805,6 +825,13 @@ a {
   .student-news-mini-grid,
   .student-profile-grid {
     grid-template-columns: 1fr;
+  }
+
+  .student-table-wrap-limited,
+  .student-table-wrap-limited.is-compact,
+  .student-table-wrap-limited.is-expanded {
+    min-height: auto;
+    max-height: 360px;
   }
 }
 

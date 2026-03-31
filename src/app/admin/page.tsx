@@ -375,6 +375,7 @@ export default function AdminPage() {
                 label={copy.topGrades}
                 title={copy.allGradesTitle}
                 description={copy.allGradesDescription}
+                language={language}
                 headers={[
                   copy.gradesStudent,
                   copy.gradesClass,
@@ -405,6 +406,7 @@ export default function AdminPage() {
                 id="student-schedules"
                 label={copy.topSchedules}
                 title={copy.studentSchedulesTitle}
+                language={language}
                 headers={[
                   copy.scheduleStudent,
                   copy.scheduleTime,
@@ -430,6 +432,7 @@ export default function AdminPage() {
                 id="teacher-schedules"
                 label={copy.topSchedules}
                 title={copy.teacherSchedulesTitle}
+                language={language}
                 headers={[
                   copy.scheduleTeacher,
                   copy.scheduleTime,
@@ -455,6 +458,7 @@ export default function AdminPage() {
                 id="class-schedules"
                 label={copy.topSchedules}
                 title={copy.classSchedulesTitle}
+                language={language}
                 headers={[
                   copy.scheduleClass,
                   copy.scheduleTime,
@@ -481,6 +485,7 @@ export default function AdminPage() {
                 label={copy.topRating}
                 title={copy.ratingTitle}
                 description={copy.ratingDescription}
+                language={language}
                 headers={[copy.ratingPlace, copy.ratingStudent, copy.ratingScore]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}
@@ -500,6 +505,7 @@ export default function AdminPage() {
                 id="news-list"
                 label={copy.topNews}
                 title={copy.heroNewsTitle}
+                language={language}
                 headers={[copy.newsTitleLabel, copy.newsPublishedLabel, copy.gradesDate]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}

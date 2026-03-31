@@ -242,6 +242,7 @@ export default function ParentPage() {
                 label={copy.topGrades}
                 title={copy.gradesTitle}
                 description={copy.gradesDescription}
+                language={language}
                 headers={[
                   copy.gradesSubject,
                   copy.gradesLesson,
@@ -267,6 +268,7 @@ export default function ParentPage() {
                 label={copy.topTimetable}
                 title={copy.timetableTitle}
                 description={copy.timetableDescription}
+                language={language}
                 headers={[
                   copy.timetableTime,
                   copy.gradesSubject,
@@ -294,6 +296,7 @@ export default function ParentPage() {
                 label={copy.topChild}
                 title={copy.childTitle}
                 description={copy.childDescription}
+                language={language}
                 headers={[copy.childLogin, copy.childEmail]}
                 emptyState={copy.emptyState}
                 emptyColSpan={2}
@@ -313,6 +316,7 @@ export default function ParentPage() {
                 label={copy.topRating}
                 title={copy.ratingTitle}
                 description={copy.ratingDescription}
+                language={language}
                 headers={[copy.ratingPlace, copy.ratingStudent, copy.ratingScore]}
                 emptyState={copy.emptyState}
                 emptyColSpan={3}
